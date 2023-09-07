@@ -44,11 +44,11 @@ public class UsuarioController {
 
     // Buscar usuário por nome - http://localhost:8080/usuarios/{nome}
     @GetMapping("/{nome}")
-    public ResponseEntity<Usuario> buscarUsuarioPorNome(@PathVariable String nome) {
-        Usuario usuario = usuarioRepository.findByNome(nome);
+    public ResponseEntity<?> buscarUsuarioPorNome(@PathVariable String nome) {
+        List<Usuario> usuarios = usuarioRepository.findByNome(nome);
 
-        if (usuario != null) {
-            return ResponseEntity.ok(usuario);
+        if (!usuarios.isEmpty()) {
+            return ResponseEntity.ok(usuarios);
         }
         return ResponseEntity.notFound().build();
     }
