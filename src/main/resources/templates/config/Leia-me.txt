@@ -1,0 +1,174 @@
+Observações:
+
+Documentação JUnit5: https://junit.org/junit5/docs/current/user-guide/#running-tests
+Mockito: https://site.mockito.org/
+
+-------------------- // --------------------
+
+Anotação `@Mock`
+
+A anotação `@Mock` é uma anotação usada na biblioteca Mockito, que é uma biblioteca popular em Java para criar objetos simulados (mocks) para 
+testes unitários. Vou explicar como funciona e em que contexto você a usaria.
+
+Em testes unitários, muitas vezes você deseja isolar a unidade que está testando, o que significa que você não quer depender de objetos ou 
+componentes externos. Em vez disso, você deseja substituir essas dependências por objetos simulados que se comportem da maneira que você 
+especificar para o teste. É aí que o Mockito e a anotação `@Mock` entram em cena.
+
+A anotação `@Mock` é usada para criar um objeto simulado (mock) de uma classe ou interface. Aqui estão os passos típicos para usá-lo:
+
+1. **Anote um Campo com `@Mock`:** Em sua classe de teste, você anota um campo com `@Mock`. Isso informa ao Mockito para criar um objeto mock 
+   desse tipo. Por exemplo:
+
+```java
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+public class MeuTeste {
+
+    @Mock
+    private MinhaClasse minhaClasseMock;
+    
+    // ...
+}
+```
+
+2. **Inicialize os Mocks:** Em algum lugar antes de seus testes serem executados (por exemplo, em um método `setUp` marcado com `@Before`), 
+você deve inicializar os mocks usando `MockitoAnnotations.initMocks(this);`. Isso garante que os mocks sejam criados e injetados corretamente em 
+sua classe de teste.
+
+```java
+import org.junit.Before;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+public class MeuTeste {
+
+    @Mock
+    private MinhaClasse minhaClasseMock;
+    
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
+    
+    // ...
+}
+```
+
+3. **Use os Mocks em Seus Testes:** Agora, você pode usar `minhaClasseMock` como se fosse uma instância real de `MinhaClasse`, mas todas as 
+interações com ela serão rastreadas e controladas pelo Mockito. Você pode definir comportamentos específicos para métodos do mock usando o 
+Mockito, como definir valores de retorno ou verificar se os métodos foram chamados com argumentos específicos.
+
+A anotação `@Mock` simplifica a criação de mocks em seus testes e torna o código mais legível. Ela é especialmente útil quando você está lidando 
+com várias dependências que precisam ser simuladas em seus testes unitários, permitindo que você se concentre na lógica do teste em vez de criar 
+manualmente objetos simulados.
+
+Lembre-se de que o Mockito é uma ferramenta poderosa para testes unitários, mas é importante usá-lo com sabedoria para garantir que seus testes 
+sejam robustos e precisos.
+
+-------------------- // --------------------
+
+Anotação `@InjectMocks`
+
+A anotação `@InjectMocks` é outra anotação útil fornecida pelo framework Mockito em Java para testes unitários. Enquanto a anotação `@Mock` é 
+usada para criar objetos simulados (mocks) de classes ou interfaces, a anotação `@InjectMocks` é usada para injetar esses mocks em uma instância 
+de uma classe que você deseja testar. Ela ajuda a simplificar a injeção de dependência nos seus testes.
+
+Aqui está como a anotação `@InjectMocks` funciona:
+
+1. **Crie uma instância da classe que você deseja testar.** Normalmente, essa é a classe que contém a lógica que você deseja testar. Por exemplo:
+
+```java
+public class MinhaClasse {
+    private MeuDependente dependente;
+
+    public MinhaClasse(MeuDependente dependente) {
+        this.dependente = dependente;
+    }
+
+    // Outros métodos e lógica...
+}
+```
+
+2. **Anote essa instância com `@InjectMocks`.** O Mockito irá procurar por campos anotados com `@Mock` e tentará injetar automaticamente esses 
+mocks na instância da classe que você deseja testar. Veja um exemplo:
+
+```java
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+public class MeuTeste {
+
+    @InjectMocks
+    private MinhaClasse minhaClasseParaTestar;
+
+    @Mock
+    private MeuDependente meuDependenteMock;
+
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    // Seus testes...
+}
+```
+
+3. **Inicialize os mocks.** Da mesma forma que você faz com `@Mock`, você deve inicializar os mocks usando `MockitoAnnotations.initMocks(this);
+`. Isso faz com que o Mockito crie instâncias dos mocks e os injete na sua classe que você deseja testar.
+
+4. **Realize seus testes.** Agora, você pode realizar seus testes chamando métodos na instância `minhaClasseParaTestar`. Os mocks criados serão 
+automaticamente injetados como dependências nessa classe, permitindo que você controle o comportamento dessas dependências durante os testes.
+
+O uso de `@InjectMocks` é útil quando você deseja testar uma classe que possui dependências injetadas, como serviços ou outros componentes. Ele 
+ajuda a isolar a classe que está sendo testada, substituindo automaticamente suas dependências reais por mocks, permitindo que você se concentre 
+na lógica específica do teste.
+
+No entanto, é importante observar que `@InjectMocks` tem algumas limitações e pode não ser adequado para casos complexos de injeção de 
+dependência. Em tais situações, pode ser preferível criar manualmente as instâncias de classe e injetar os mocks manualmente. Além disso, 
+certifique-se de que a classe que você está testando usa injeção de dependência apropriada, como construtores ou métodos de configuração, para 
+que o Mockito possa realizar a injeção de mocks corretamente.
+
+Vale ressaltar que a anotação `@InjectMocks` é usada para serviços (Services) ou componentes que contêm a lógica de negócios em um aplicativo 
+Spring. O objetivo principal do `@InjectMocks` é injetar mocks (gerados pelo Mockito) em um objeto que você deseja testar.
+
+É importante ter em mente que o `UsuarioController`, normalmente você faria testes de integração ou testes de unidade com o Spring MVC para 
+verificar se as solicitações HTTP e os endpoints do controlador estão funcionando corretamente em um ambiente simulado. Você não usaria o 
+`@InjectMocks` diretamente no controlador.
+
+A anotação `@InjectMocks` é mais apropriada para testar serviços ou componentes que possuam lógica de negócios. Para testar o controlador 
+`UsuarioController`, você geralmente configuraria um ambiente de teste de integração que inicializa o aplicativo Spring, faz solicitações HTTP 
+simuladas e verifica as respostas.
+
+Se você deseja testar o `UsuarioController`, provavelmente seria mais apropriado configurar um teste de integração que usa o contexto de 
+aplicativo real do Spring para testar a funcionalidade completa do controlador, incluindo as operações CRUD que ele manipula.
+
+Por outro lado, se você tiver lógica de negócios em um serviço relacionado aos usuários, é aí que você usaria o `@InjectMocks` para injetar 
+mocks de dependências (como repositórios) no serviço e, em seguida, escreveria testes de unidade para o serviço, não para o controlador.
+
+-------------------- // --------------------
+
+A anotação `@BeforeEach` e o método `setUp()` fazem parte do framework de teste JUnit 5 e são usados para configurar o ambiente antes da execução 
+de cada método de teste em uma classe de teste. Estou utilizando a biblioteca Mockito para criar mocks de objetos, e o método `setUp()` está 
+sendo usado para inicializar esses mocks antes de cada teste.
+
+Aqui está uma explicação mais detalhada:
+
+1. `@BeforeEach`: Esta é uma anotação do JUnit 5 que indica que o método a seguir será executado antes de cada método de teste na classe de teste. 
+    Isso é útil para configurar o estado inicial comum para todos os testes.
+
+2. `public void setUp()`: Este é o método que é anotado com `@BeforeEach`. Ele é um método personalizado que você cria e nomeia como desejar. No 
+    meu caso, ele é chamado de `setUp()`. Este método será executado antes de cada teste na classe.
+
+3. `MockitoAnnotations.openMocks(this)`: Dentro do método `setUp()`, está usando o `MockitoAnnotations.openMocks(this)` para inicializar os 
+    mocks criados com o Mockito. Isso é importante para garantir que os mocks estejam prontos e configurados antes de cada teste.
+
+   - `MockitoAnnotations`: É uma classe da biblioteca Mockito que fornece métodos para inicializar mocks e annotations em classes de teste.
+   
+   - `openMocks(this)`: Este método inicializa todos os campos anotados com `@Mock` e `@InjectMocks` na classe de teste atual (`this`). Isso 
+      significa que qualquer objeto mockado necessário para seus testes será configurado e pronto para uso.
+
+Em resumo, o `@BeforeEach` com o método `setUp()` e `MockitoAnnotations.openMocks(this)` são usados para garantir que os mocks necessários sejam 
+configurados antes de cada teste, para que você possa realizar testes unitários consistentes e isolados. Isso ajuda a manter o estado de teste 
+limpo e garante que cada teste comece em um ambiente previsível.
