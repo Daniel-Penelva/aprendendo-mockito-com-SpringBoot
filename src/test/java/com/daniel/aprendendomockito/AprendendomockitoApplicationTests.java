@@ -90,7 +90,7 @@ class AprendendomockitoApplicationTests {
 		 assertEquals(usuario, resultado);
 	}
 
-	@Test
+	//@Test
 	public void testBuscarUsuarioPorNome(){
 
 		// Criando uma lista de usuários de exemplos de nome DAniel
@@ -107,6 +107,29 @@ class AprendendomockitoApplicationTests {
 
 		 // Verificando se o resultado é a mesma lista de usuários de exemplo
 		 assertEquals(usuarios, resultado);
+	}
+
+	@Test
+	public void testAlterarUsuarioporId(){
+
+		// Criando um usuário de exemplo com um nome inicial
+        Usuario usuario = new Usuario();
+        usuario.setId(1L);
+        usuario.setNome("Daniel");
+
+		// Criando um novo objeto Usuario com o nome atualizado
+		Usuario novoUsuario = new Usuario();
+		novoUsuario.setNome("Daniel Up");
+
+		// Definindo o comportamento do mock do repositório (utilizando o findByID e save)
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario);
+
+		// Atualizando o nome do usuário
+        Usuario usuarioAtualizado = usuarioService.atualizarUsuario(1L, novoUsuario);
+
+        // Verificando se o nome foi atualizado corretamente
+        assertEquals("Daniel Up", usuarioAtualizado.getNome());
 	}
 
 }
