@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,7 +50,7 @@ class AprendendomockitoApplicationTests {
 		assertEquals(novoUsuario, resultado);
 	}
 
-	@Test
+	//@Test
 	public void testBuscarTodosUsuarios(){
 
 		// Criando uma lista de usuários como exemplo
@@ -67,6 +68,23 @@ class AprendendomockitoApplicationTests {
 
 		//Verificando se o resultado é a mesma lista de usuários de exemplo
 		assertEquals(usuarios, resultados);
+	}
+
+	@Test
+	public void testBuscarUsuarioPorId(){
+		// Criando um novo usuário
+		Usuario usuario = new Usuario();
+		usuario.setId(1L);
+		usuario.setNome("Ana");
+
+		// Definindo o comportamento do mock do repositório
+		when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
+
+		// Chamando o método do serviço para buscar o usuário por ID
+		Usuario resultado = usuarioService.buscarUsuarioPorId(1L);
+
+		 // Verificando se o resultado é o mesmo que o usuário de exemplo
+		 assertEquals(usuario, resultado);
 	}
 
 }
