@@ -2,13 +2,11 @@ package com.daniel.aprendendomockito;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +17,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.daniel.aprendendomockito.controller.UsuarioController;
 import com.daniel.aprendendomockito.model.Usuario;
 import com.daniel.aprendendomockito.repository.UsuarioRepository;
 import com.daniel.aprendendomockito.service.UsuarioService;
