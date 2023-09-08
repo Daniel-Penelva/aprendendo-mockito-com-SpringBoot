@@ -1,6 +1,7 @@
 Observações:
 
-Documentação JUnit5: https://junit.org/junit5/docs/current/user-guide/#running-tests
+Documentação JUnit5: https://junit.org/junit5/
+Dependência JUnit5: https://junit.org/junit5/docs/current/user-guide/#running-tests
 Mockito: https://site.mockito.org/
 
 -------------------- // --------------------

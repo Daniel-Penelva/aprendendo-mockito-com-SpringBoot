@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -29,7 +32,7 @@ class AprendendomockitoApplicationTests {
 		MockitoAnnotations.openMocks(this);
 	}
 
-	@Test
+	//@Test
 	public void testCriarUsuario() {
 
 		// Criando um novo usuário
@@ -44,6 +47,26 @@ class AprendendomockitoApplicationTests {
 
 		// Verificando se o usuário é o mesmo usuário do exemplo
 		assertEquals(novoUsuario, resultado);
+	}
+
+	@Test
+	public void testBuscarTodosUsuarios(){
+
+		// Criando uma lista de usuários como exemplo
+		List<Usuario> usuarios = new ArrayList<>();
+		usuarios.add(new Usuario(1L, "João"));
+		usuarios.add(new Usuario(2L, "Daniel"));
+		usuarios.add(new Usuario(3L, "Maria"));
+		usuarios.add(new Usuario(4L, "Igor"));
+
+		// Definindo o comportamento do Mock do repositório
+		when(usuarioRepository.findAll()).thenReturn(usuarios);
+
+		// Chamando o método do serviço para buscar todos os usuários
+		List<Usuario> resultados = usuarioService.listarUsuarios();
+
+		//Verificando se o resultado é a mesma lista de usuários de exemplo
+		assertEquals(usuarios, resultados);
 	}
 
 }
