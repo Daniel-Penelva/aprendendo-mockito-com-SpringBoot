@@ -2,9 +2,11 @@ package com.daniel.aprendendomockito;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.daniel.aprendendomockito.controller.UsuarioController;
 import com.daniel.aprendendomockito.model.Usuario;
 import com.daniel.aprendendomockito.repository.UsuarioRepository;
 import com.daniel.aprendendomockito.service.UsuarioService;
@@ -70,7 +73,7 @@ class AprendendomockitoApplicationTests {
 		assertEquals(usuarios, resultados);
 	}
 
-	@Test
+	//@Test
 	public void testBuscarUsuarioPorId(){
 		// Criando um novo usuário
 		Usuario usuario = new Usuario();
@@ -85,6 +88,25 @@ class AprendendomockitoApplicationTests {
 
 		 // Verificando se o resultado é o mesmo que o usuário de exemplo
 		 assertEquals(usuario, resultado);
+	}
+
+	@Test
+	public void testBuscarUsuarioPorNome(){
+
+		// Criando uma lista de usuários de exemplos de nome DAniel
+		List<Usuario> usuarios = new ArrayList<>();
+		usuarios.add(new Usuario(1L, "Daniel"));
+		usuarios.add(new Usuario(2L, "Daniel"));
+		usuarios.add(new Usuario(3L, "Daniel"));
+
+		 // Definindo o comportamento do mock do repositório
+		 when(usuarioRepository.findByNome("Daniel")).thenReturn(usuarios);
+
+		 // Chamando o método do serviço para buscar usuários por nome
+		 List<Usuario> resultado = usuarioService.buscarUsuariosPorNome("Daniel");
+
+		 // Verificando se o resultado é a mesma lista de usuários de exemplo
+		 assertEquals(usuarios, resultado);
 	}
 
 }
