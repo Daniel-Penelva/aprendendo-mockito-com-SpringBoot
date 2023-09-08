@@ -3,6 +3,8 @@ package com.daniel.aprendendomockito;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -132,4 +134,16 @@ class AprendendomockitoApplicationTests {
         assertEquals("Daniel Up", usuarioAtualizado.getNome());
 	}
 
+	@Test
+	public void testDeletarUsuarioPorId(){
+		
+		// Simular que um usuário com o ID 1 existe no repositório
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(new Usuario()));
+
+        // Chamando o método do serviço para deletar o usuário por ID
+        usuarioService.deletarUsuario(1L);
+
+        // Verificando se o método deleteById do repositório foi chamado com o ID correto
+        verify(usuarioRepository, times(1)).deleteById(1L);
+	}
 }
