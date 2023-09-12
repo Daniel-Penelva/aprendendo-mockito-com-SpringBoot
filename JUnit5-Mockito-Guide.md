@@ -251,28 +251,44 @@ MyInterface myMock = Mockito.mock(MyInterface.class);
 
 ### 2. Configuração de Comportamento
 
-Você pode configurar o comportamento de um mock usando o método `when` para especificar o que o mock deve fazer quando determinados métodos são chamados.
+Você pode configurar o comportamento de um mock usando os métodos:
 
-```java
-when(myMock.metodo()).thenReturn(valorEsperado);
-```
+1. `when()` para especificar o que o mock deve fazer quando determinados métodos são chamados.
+
+   ```java
+   when(myMock.metodo()).thenReturn(valorEsperado);
+   ```
+
+2. `doNothing()`: Usado para configurar um método void para não fazer nada quando chamado. Isso é útil quando você deseja simular um método void (sem retorno) que não deve executar nada. 
+
+   ```java
+   doNothing().when(mockObjeto).metodoVoid();
+   ```
+
+3. `thenReturn():` É usado para especificar o que o mock deve retornar quando o método configurado for chamado. Isso é usado quando você deseja simular o retorno de um método.
 
 ### 3. Verificação de Interações
 
 Você pode verificar se determinados métodos de um mock foram chamados e quantas vezes foram chamados. Isso é útil para garantir que seu código esteja se comportando conforme o esperado.
 
-```java
-verify(myMock, times(1)).metodo();
-```
+1. `verify():` É usado para verificar se um determinado método foi chamado em um mock durante o teste. Você pode verificar quantas vezes um método foi chamado e com quais argumentos.
+
+   ```java
+    verify(myMock, times(1)).metodo();
+   ```
+
+2. `times():` É usado em conjunto com verify para especificar quantas vezes você espera que um método tenha sido chamado. Por exemplo, times(1) verifica se o método foi chamado exatamente uma vez.
 
 ### 4. Captura de Argumentos
 
 O Mockito permite capturar os argumentos passados para um mock durante a chamada de um método. Isso é útil para verificar os valores passados para o mock.
 
-```java
-ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
-verify(myMock).metodo(captor.capture());
-```
+1. ArgumentCaptor: É uma funcionalidade do Mockito que permite capturar os argumentos passados para um método mockado. Isso é útil quando você deseja realizar verificações mais detalhadas nos argumentos passados a um método, como seus valores ou propriedades.
+
+   ```java
+   ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+   verify(myMock).metodo(captor.capture());
+   ```
 
 ### 5. Matchers
 
@@ -281,6 +297,50 @@ O Mockito oferece uma variedade de matchers que facilitam a verificação de arg
 ```java
 when(myMock.metodo(eq(valorEsperado))).thenReturn(resultado);
 ```
+
+1. `any():` É um matcher usado para verificar se um método foi chamado com qualquer argumento. Por exemplo, verifica se mymethod foi chamado com qualquer argumento.
+
+   ```java
+   verify(mock).mymethod(any())
+   ```
+
+2. `eq():` É usado para verificar se um método foi chamado com um argumento específico. Por exemplo, verifica se mymethod foi chamado com o argumento "valor".
+
+   ```java
+   verify(mock).mymethod(eq("valor"))
+   ```
+
+3. `anyInt():` Este matcher é usado para verificar se um método foi chamado com um argumento do tipo int.
+
+   ```java
+   verify(mock).mymethod(anyInt());
+   ```
+
+4. `anyString():` Este matcher é usado para verificar se um método foi chamado com um argumento do tipo String.
+
+   ```java
+   verify(mock).mymethod(anyString());
+   ```
+
+5. `anyObject():` Este matcher é usado para verificar se um método foi chamado com um argumento de qualquer tipo de objeto.
+
+   ```java
+   verify(mock).mymethod(anyObject());
+   ```
+
+6. `anyList():` Se você deseja verificar se um método foi chamado com uma lista como argumento.
+
+   ```java
+   verify(mock).mymethod(anyList());
+   ```
+
+7. `anyMap():` Se você deseja verificar se um método foi chamado com um map como argumento
+
+   ```java
+   verify(mock).mymethod(anyMap());
+   ```
+
+8. Outros Matchers Específicos: Além desses, o Mockito fornece uma variedade de matchers específicos para tipos de argumentos comuns, como `anyLong()`, `anyDouble()`, `anyBoolean()`, `anyByte()`, `anyChar()`, `anyShort()`, `anyFloat()`, `anyCollection()`, `anySet()`, entre outros. Você pode usar esses matchers para verificar se um método foi chamado com um argumento de um tipo específico.
 
 ## Usando o Mockito
 
